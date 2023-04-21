@@ -52,10 +52,19 @@ def resource_check(coffee):
 
 
 def coffee_machine():
+    global money
     coffee_select = input("What would you like? (espresso/latte/cappuccino): ")
     # If user selects report, output system's resources and change
+
+    if coffee_select != "espresso" and coffee_select != "latte" and coffee_select != "cappuccino" and coffee_select != "report":
+        print("You have not selected an available option, please select again.")
+        coffee_machine()
+
     if coffee_select == "report":
-        print(resources)
+        print(f"Water: {resources['water']}")
+        print(f"Milk: {resources['milk']}")
+        print(f"Coffee: {resources['coffee']}")
+        print(f"Money: {money}")
         coffee_machine()
 
     # Check if the system has enough resources
@@ -77,7 +86,10 @@ def coffee_machine():
         coffee_machine()
     elif coin_input > MENU[coffee_select]["cost"]:
         change = round(coin_input - MENU[coffee_select]["cost"], 2)
+        money += MENU[coffee_select]["cost"]
         print(f"Here is {change} in change.")
+    elif coin_input == MENU[coffee_select]["cost"]:
+        money += MENU[coffee_select]["cost"]
 
     coffee_resources = MENU[coffee_select]["ingredients"]
 
